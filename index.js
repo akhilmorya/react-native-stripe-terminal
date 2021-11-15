@@ -115,17 +115,17 @@ class StripeTerminal {
   });
   }
 
-  discoverReaders(deviceType, method, simulated) {
+  discoverReaders() {
     return this._wrapPromiseReturn('readerDiscoveryCompletion', () => {
-      RNStripeTerminal.discoverReaders(deviceType, method, simulated);
+      RNStripeTerminal.discoverReaders();
     });
   }
 
-  checkForUpdate() {
-    return this._wrapPromiseReturn('updateCheck', () => {
-      RNStripeTerminal.checkForUpdate();
-    }, 'update')
-  }
+  // checkForUpdate() {
+  //   return this._wrapPromiseReturn('updateCheck', () => {
+  //     RNStripeTerminal.checkForUpdate();
+  //   }, 'update')
+  // }
 
   installUpdate() {
     return this._wrapPromiseReturn('updateInstall', () => {
@@ -133,9 +133,9 @@ class StripeTerminal {
     })
   }
 
-  connectReader(serialNumber) {
+  connectReader(serialNumber, locationId) {
     return this._wrapPromiseReturn('readerConnection', () => {
-      RNStripeTerminal.connectReader(serialNumber);
+      RNStripeTerminal.connectReader(serialNumber, locationId);
     });
   }
 

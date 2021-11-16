@@ -147,7 +147,7 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ");
         paymentIntentMap.putString(CREATED,simpleDateFormat.format(new Date(paymentIntent.getCreated())));
         paymentIntentMap.putInt(STATUS,paymentIntent.getStatus().ordinal());
-        paymentIntentMap.putInt(AMOUNT,paymentIntent.getAmount());
+        paymentIntentMap.putDouble(AMOUNT,paymentIntent.getAmount());
         paymentIntentMap.putString(CURRENCY,currency);
         WritableMap metaDataMap = Arguments.createMap();
         if(paymentIntent.getMetadata()!=null){
@@ -660,19 +660,20 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
 
     @ReactMethod
     public void installUpdate(){
-               readerSoftwareUpdate,this, new Callback() {
-           @Override
-           public void onSuccess() {
-
-           }
-
-           @Override
-           public void onFailure(@Nonnull TerminalException e) {
-               WritableMap errorMap = Arguments.createMap();
-               errorMap.putString(ERROR,e.getErrorMessage());
-               sendEventWithName(EVENT_UPDATE_INSTALL,errorMap);
-           }
-       });
+        Terminal.getInstance().installAvailableUpdate();
+//                readerSoftwareUpdate,this, new Callback() {
+//            @Override
+//            public void onSuccess() {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(@Nonnull TerminalException e) {
+//                WritableMap errorMap = Arguments.createMap();
+//                errorMap.putString(ERROR,e.getErrorMessage());
+//                sendEventWithName(EVENT_UPDATE_INSTALL,errorMap);
+//            }
+//        });
     }
 
     @Override
@@ -722,7 +723,7 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     @Override
-    public void onUpdateDiscoveredReaders(@Nonnull List<? extends Reader> list) {
+    public void onUpdateDiscoveredReaders(@Nonnull List<Reader> list) {
         discoveredReadersList = list;
         WritableArray readersDiscoveredArr = Arguments.createArray();
         for(Reader reader : list){

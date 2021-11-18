@@ -661,52 +661,7 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     @ReactMethod
     public void installUpdate(){
         Terminal.getInstance().installAvailableUpdate();
-//                readerSoftwareUpdate,this, new Callback() {
-//            @Override
-//            public void onSuccess() {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@Nonnull TerminalException e) {
-//                WritableMap errorMap = Arguments.createMap();
-//                errorMap.putString(ERROR,e.getErrorMessage());
-//                sendEventWithName(EVENT_UPDATE_INSTALL,errorMap);
-//            }
-//        });
     }
-
-    @Override
-    public void onFinishInstallingUpdate(@Nullable ReaderSoftwareUpdate readerSoftwareUpdate, @Nullable TerminalException e) {
-        sendEventWithName(EVENT_UPDATE_INSTALL, Arguments.createMap());
-    }
-
-    @Override
-    public void onReportAvailableUpdate(@NotNull ReaderSoftwareUpdate readerSoftwareUpdate) {
-        sendEventWithName(EVENT_UPDATE_CHECK,serializeUpdate(readerSoftwareUpdate));
-    }
-
-    @Override
-    public void onStartInstallingUpdate(@NotNull ReaderSoftwareUpdate readerSoftwareUpdate, @Nullable Cancelable cancelable) {
-
-    }
-
-//    @ReactMethod
-//    public void checkForUpdate(){
-//        Terminal.getInstance().checkForUpdate(new ReaderSoftwareUpdateCallback() {
-//            @Override
-//            public void onSuccess(@Nullable ReaderSoftwareUpdate readerSoftwareUpdate) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(@Nonnull TerminalException e) {
-//                WritableMap errorMap = Arguments.createMap();
-//                errorMap.putString(ERROR,e.getErrorMessage());
-//                sendEventWithName(EVENT_UPDATE_CHECK,errorMap);
-//            }
-//        });
-//    }
 
     @ReactMethod
     public void getConnectionStatus(){
@@ -742,24 +697,10 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     @Override
-    public void onReportLowBatteryWarning() {
-       sendEventWithName(EVENT_DID_REPORT_LOW_BATTERY_WARNING,Arguments.createMap());
-    }
-
-    @Override
     public void onConnectionStatusChange(@NotNull ConnectionStatus status) {
         WritableMap statusMap = Arguments.createMap();
         statusMap.putInt(STATUS,status.ordinal());
         sendEventWithName(EVENT_DID_CHANGE_CONNECTION_STATUS,statusMap);
-    }
-
-    @Override
-    public void onReportReaderEvent(@NotNull ReaderEvent event) {
-        lastReaderEvent = event;
-        WritableMap readerEventReportMap = Arguments.createMap();
-        readerEventReportMap.putInt(EVENT,event.ordinal());
-        readerEventReportMap.putMap(INFO,Arguments.createMap());
-        sendEventWithName(EVENT_DID_REPORT_READER_EVENT, readerEventReportMap);
     }
 
     @Override
@@ -775,10 +716,32 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     @Override
-    public void onRequestReaderInput(@NotNull ReaderInputOptions readerInputOptions) {
-        WritableMap readerOptionsMap = Arguments.createMap();
-        readerOptionsMap.putString(TEXT,readerInputOptions.toString());
-        sendEventWithName(EVENT_DID_REQUEST_READER_INPUT,readerOptionsMap);
+    public void onFinishInstallingUpdate(@Nullable ReaderSoftwareUpdate readerSoftwareUpdate, @Nullable TerminalException e) {
+        sendEventWithName(EVENT_FINISH_INSTALLING_UPDATE, Arguments.createMap());
+    }
+
+    @Override
+    public void onReportAvailableUpdate(@NotNull ReaderSoftwareUpdate readerSoftwareUpdate) {
+        sendEventWithName(EVENT_REPORT_AVAILABLE_UPDATE,serializeUpdate(readerSoftwareUpdate));
+    }
+
+    @Override
+    public void onReportLowBatteryWarning() {
+        sendEventWithName(EVENT_DID_REPORT_LOW_BATTERY_WARNING,Arguments.createMap());
+    }
+
+    @Override
+    public void onReportReaderEvent(@NotNull ReaderEvent event) {
+        lastReaderEvent = event;
+        WritableMap readerEventReportMap = Arguments.createMap();
+        readerEventReportMap.putInt(EVENT,event.ordinal());
+        readerEventReportMap.putMap(INFO,Arguments.createMap());
+        sendEventWithName(EVENT_DID_REPORT_READER_EVENT, readerEventReportMap);
+    }
+
+    @Override
+    public void onReportReaderSoftwareUpdateProgress(float v) {
+        sendEventWithName(EVENT_READER_SOFTWARE_UPDATE_PROGRESS,new Float(v));
     }
 
     @Override
@@ -789,8 +752,14 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     @Override
-    public void onReportReaderSoftwareUpdateProgress(float v) {
-        sendEventWithName(EVENT_READER_SOFTWARE_UPDATE_PROGRESS,new Float(v));
+    public void onRequestReaderInput(@NotNull ReaderInputOptions readerInputOptions) {
+        WritableMap readerOptionsMap = Arguments.createMap();
+        readerOptionsMap.putString(TEXT,readerInputOptions.toString());
+        sendEventWithName(EVENT_DID_REQUEST_READER_INPUT,readerOptionsMap);
     }
 
+    @Override
+    public void onStartInstallingUpdate(@NotNull ReaderSoftwareUpdate readerSoftwareUpdate, @Nullable Cancelable cancelable) {
+        sendEventWithName(EVENT_START_INSTALLING_UPDATE, serializeUpdate(readerSoftwareUpdate));
+    }
 }

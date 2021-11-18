@@ -35,9 +35,10 @@ public class Constants {
     public static final String EVENT_ABORT_DISCOVER_READER_COMPLETION = "abortDiscoverReadersCompletion";
     public static final String EVENT_PAYMENT_STATUS = "paymentStatus";
     public static final String EVENT_CONNECTION_STATUS = "connectionStatus";
-    public static final String EVENT_UPDATE_CHECK = "updateCheck";
+    public static final String EVENT_REPORT_AVAILABLE_UPDATE = "readerReportAvailableUpdate";
+    public static final String EVENT_START_INSTALLING_UPDATE = "readerStartInstallingUpdate";
     public static final String EVENT_READER_SOFTWARE_UPDATE_PROGRESS = "readerSoftwareUpdateProgress";
-    public static final String EVENT_UPDATE_INSTALL = "updateInstall";
+    public static final String EVENT_FINISH_INSTALLING_UPDATE = "readerFinishInstallingUpdate";
     public static final String EVENT_ABORT_INSTALL_COMPLETION = "abortInstallUpdateCompletion";
     public static final String EVENT_ABORT_CREATE_PAYMENT_COMPLETION = "abortCreatePaymentCompletion";
 

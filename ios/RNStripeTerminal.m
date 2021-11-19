@@ -117,7 +117,7 @@ static dispatch_once_t onceToken = 0;
 }
 
 - (void)reader:(nonnull SCPReader *)reader didReportAvailableUpdate:(nonnull SCPReaderSoftwareUpdate *)update {
-    [self sendEventWithName:@"readerReportAvailableUpdate" body:@{}];
+    [self sendEventWithName:@"readerReportAvailableUpdate" body:update];
 }
 
 

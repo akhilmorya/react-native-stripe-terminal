@@ -122,12 +122,12 @@ static dispatch_once_t onceToken = 0;
 
 
 - (void)reader:(nonnull SCPReader *)reader didRequestReaderDisplayMessage:(SCPReaderDisplayMessage)displayMessage {
-    [self sendEventWithName:@"readerRequestReaderDisplayMessage" body:@{}];
+    [self sendEventWithName:@"didRequestReaderDisplayMessage" body:@{}];
 }
 
 
 - (void)reader:(nonnull SCPReader *)reader didRequestReaderInput:(SCPReaderInputOptions)inputOptions {
-    [self sendEventWithName:@"readerRequestReaderInput" body:@{}];
+    [self sendEventWithName:@"didRequestReaderInput" body:@{}];
 }
 
 

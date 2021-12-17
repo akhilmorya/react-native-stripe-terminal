@@ -120,17 +120,19 @@ static dispatch_once_t onceToken = 0;
     [self sendEventWithName:@"readerReportAvailableUpdate" body:update];
 }
 
-
 - (void)reader:(nonnull SCPReader *)reader didRequestReaderDisplayMessage:(SCPReaderDisplayMessage)displayMessage {
-    [self sendEventWithName:@"didRequestReaderDisplayMessage" body:@{}];
+    [self sendEventWithName:@"didRequestReaderDisplayMessage" body:
+     @{
+       @"text": [SCPTerminal stringFromReaderDisplayMessage:displayMessage]
+       }];
 }
-
 
 - (void)reader:(nonnull SCPReader *)reader didRequestReaderInput:(SCPReaderInputOptions)inputOptions {
-    [self sendEventWithName:@"didRequestReaderInput" body:@{}];
+    [self sendEventWithName:@"didRequestReaderInput" body:
+     @{
+       @"text": [SCPTerminal stringFromReaderDisplayMessage:inputOptions]
+       }];
 }
-
-
 
 - (void)onLogEntry:(NSString * _Nonnull) logline {
     if (self.bridge == nil) {

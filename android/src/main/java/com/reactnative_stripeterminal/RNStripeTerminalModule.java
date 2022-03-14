@@ -27,6 +27,7 @@ import com.stripe.stripeterminal.external.models.DiscoveryMethod;
 import com.stripe.stripeterminal.external.models.Location;
 import com.stripe.stripeterminal.external.models.PaymentIntent;
 import com.stripe.stripeterminal.external.models.PaymentIntentParameters;
+import com.stripe.stripeterminal.external.models.PaymentMethodType;
 import com.stripe.stripeterminal.external.models.PaymentStatus;
 import com.stripe.stripeterminal.external.models.Reader;
 import com.stripe.stripeterminal.external.models.ReaderDisplayMessage;
@@ -38,6 +39,7 @@ import com.stripe.stripeterminal.log.LogLevel;
 import com.stripe.stripeterminal.Terminal;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -333,7 +335,11 @@ public class RNStripeTerminalModule extends ReactContextBaseJavaModule implement
     }
 
     private PaymentIntentParameters.Builder getPaymentParams(ReadableMap options){
-        PaymentIntentParameters.Builder paymentIntentParamBuilder = new PaymentIntentParameters.Builder();
+        boolean isCADCurrency = options.hasKey(CURRENCY) && options.getString(CURRENCY).equalsIgnoreCase("cad");
+        PaymentIntentParameters.Builder paymentIntentParamBuilder = isCADCurrency ?
+                new PaymentIntentParameters.Builder(Arrays.asList(PaymentMethodType.CARD_PRESENT, PaymentMethodType.INTERAC_PRESENT)):
+                new PaymentIntentParameters.Builder();
+
         if(options!=null) {
             if (options.hasKey(AMOUNT)) {
                 paymentIntentParamBuilder.setAmount(options.getInt(AMOUNT));

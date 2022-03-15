@@ -287,7 +287,8 @@ RCT_EXPORT_METHOD(createPayment:(NSDictionary *)options) {
         NSInteger amount = [RCTConvert NSInteger:options[@"amount"]];
         NSString *currency = [RCTConvert NSString:options[@"currency"]];
 
-        SCPPaymentIntentParameters *params = [[SCPPaymentIntentParameters alloc] initWithAmount:amount currency:currency];
+        SCPPaymentIntentParameters *params = [currency isEqualToString:@"cad"] ?
+        [[SCPPaymentIntentParameters alloc] initWithAmount:amount currency:currency paymentMethodTypes:@[@"card_present", @"interac_present"]] : [[SCPPaymentIntentParameters alloc] initWithAmount:amount currency:currency];
 
         NSInteger applicationFeeAmount = [RCTConvert NSInteger:options[@"applicationFeeAmount"]];
         if (applicationFeeAmount) {
